@@ -1,4 +1,4 @@
 # WorldWise
 
 
-Single-Page-App with **Vite** and **React-Router**
+Single Page App with **Vite** and **React-Router**
