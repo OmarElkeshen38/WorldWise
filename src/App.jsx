@@ -8,6 +8,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Login from "./pages/Login";
 import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
+import City from "./components/City";
 
 function App() {
   const BASE_URL = "http://localhost:8000";
@@ -36,9 +37,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Homepage />}></Route>
-          <Route path="/product" element={<Product />}></Route>
-          <Route path="/pricing" element={<Pricing />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="product" element={<Product />}></Route>
+          <Route path="pricing" element={<Pricing />}></Route>
+          <Route path="login" element={<Login />}></Route>
           <Route path="app" element={<AppLayout />}>
             <Route
               index
@@ -48,6 +49,7 @@ function App() {
               path="cities"
               element={<CityList cities={cities} isLoading={isLoading} />}
             />
+            <Route path="cities/:id" element={<City />}  />
             <Route
               path="countries"
               element={<CountryList cities={cities} isLoading={isLoading} />}
