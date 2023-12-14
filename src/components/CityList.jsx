@@ -3,9 +3,11 @@ import styles from './CityList.module.css';
 import CityItem from "./CityItem";
 import Message from "./Message";
 import PropTypes from "prop-types";
+import { useCitiesContext } from "../contexts/CitiesContext";
 
 
-function CityList({ cities, isLoading }) {
+function CityList() {
+  const {cities, isLoading} = useCitiesContext();
 
     if (isLoading) return <Spinner />
 

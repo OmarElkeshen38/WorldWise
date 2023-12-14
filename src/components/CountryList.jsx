@@ -3,8 +3,11 @@ import styles from "./CountryList.module.css";
 import CountryItem from "./CountryItem";
 import Message from "./Message";
 import PropTypes from "prop-types";
+import { useCitiesContext } from "../contexts/CitiesContext";
 
-function CountryList({ cities, isLoading }) {
+function CountryList() {
+  const {cities, isLoading} = useCitiesContext();
+
   if (isLoading) return <Spinner />;
 
   if (!cities.length)
