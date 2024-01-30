@@ -11,8 +11,8 @@ function Map() {
   
   const { cities } = useCitiesContext()
   const [mapPosition, setMapPosition] = useState([40, 0]);
-  const [searchParams] = useSearchParams();
   const {isLoading: isLoadingPosition, position: geoLocationPosition, getPosition} = useGeolocation();
+  const [searchParams] = useSearchParams();
 
   const mapLat = searchParams.get("lat");
   const mapLng = searchParams.get("lng");
