@@ -1,22 +1,29 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCitiesContext } from "../contexts/CitiesContext";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import styles from './Map.module.css'
-import { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import styles from './Map.module.css';
+import PropTypes from "prop-types";
+import { useEffect, useState } from 'react';
 
 function Map() {
-  const navigate = useNavigate();
+  
   const { cities } = useCitiesContext()
 
   const [mapPosition, setMapPosition] = useState([40, 0]);
 
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const lat = searchParams.get("lat");
-  // const lng = searchParams.get("lng");
+  const [searchParams] = useSearchParams();
+  const mapLat = searchParams.get("lat");
+  const mapLng = searchParams.get("lng");
+
+  useEffect(function() {
+    if (mapLat && mapLng)  setMapPosition([mapLat, mapLng]);
+  },[mapLat, mapLng])
 
   return (
-    <div className={styles.mapContainer} onClick={() => navigate('form')}>
-      <MapContainer center={mapPosition} zoom={13} scrollWheelZoom={true} className={styles.map}>
+    <div className={styles.mapContainer} >
+      <MapContainer 
+        center={mapPosition}
+        zoom={6} scrollWheelZoom={true} className={styles.map}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
@@ -29,9 +36,34 @@ function Map() {
             </Popup>
           </Marker>
         )}
+
+        <ChangeCenter position={mapPosition} />
+        <DetectClick />
       </MapContainer>
     </div>
   )
+}
+
+
+function ChangeCenter({ position }) {
+  const map = useMap();
+  map.setView(position);
+  return null;
+}
+
+ChangeCenter.propTypes = {
+  position: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
+function DetectClick() {
+  const navigate = useNavigate();
+
+  useMapEvents({
+    click: (e) => navigate(`form?lat=${e.latlng.alt}&lng=${e.latlng.lng}`),
+  })
 }
 
 export default Map
